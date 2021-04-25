@@ -15,6 +15,7 @@ import { Load } from '../components/Load'
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { useNavigation } from '@react-navigation/core';
 
 // import { Container } from './styles';
 
@@ -47,8 +48,8 @@ export function PlantSelect() {
 
     const [page, setPage] = useState(1)
     const [loadingMore, setLoadingMore] = useState(false)
-    const [loadAll, setLoadAll] = useState(false)
-
+    const navigation = useNavigation()
+  
 
     function handleEnviromentSelected(enviroment: string) {
         setEnviroment(enviroment)
@@ -62,6 +63,10 @@ export function PlantSelect() {
 
         setFilteredPlants(filtered)
 
+    }
+
+    function handlePlantSelected(plant: PlantsProps){         
+        navigation.navigate('PlantSave', { plant })
     }
 
     async function fetchPlants() {
@@ -132,6 +137,7 @@ export function PlantSelect() {
             <View>
                 <FlatList
                     horizontal={true}
+                    keyExtractor={(item) => String(item.key)}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.enviromentsList}
                     data={enviroments}
@@ -148,8 +154,9 @@ export function PlantSelect() {
             </View>
 
             <View style={styles.plant}>
-                <FlatList
+                <FlatList                    
                     showsVerticalScrollIndicator={false}
+                    keyExtractor={(item) => String(item.id)}
                     numColumns={2}
                     contentContainerStyle={styles.contentContainerStyle}
                     data={filteredPlants}
@@ -164,7 +171,10 @@ export function PlantSelect() {
                     }
 
                     renderItem={({ item }) => (
-                        <PlantCardPrimary data={item} />
+                        <PlantCardPrimary 
+                            data={item}
+                            onPress={()=>handlePlantSelected(item)}                        
+                        />
                     )}
                 />
 
