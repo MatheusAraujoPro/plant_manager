@@ -44,11 +44,16 @@ export function UserIdentification() {
 
     async function handleSubmit() {
         if (!Name)
-            return Alert.alert('Me diz como posso chamar você 😥')
+            return Alert.alert('Me diz como posso chamar você 😀')
 
-        await AsyncStorage.setItem('@plantmanager:user', Name)
+            try {
+                await AsyncStorage.setItem('@plantmanager:user', Name)
+                navigation.navigate('Confirmation')
+                
+            } catch  {
+                Alert.alert('Não foi possível salvar o seu nome 😥')
+            }
 
-        navigation.navigate('Confirmation')
     }
 
     return (

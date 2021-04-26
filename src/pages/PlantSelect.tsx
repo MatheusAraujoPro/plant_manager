@@ -10,12 +10,13 @@ import {
 import { EnviromentsButton } from '../components/EnviromentButton';
 import { Header } from '../components/Header';
 import { PlantCardPrimary } from '../components/PlantCardPrimary';
-import api from '../services/api'
-import { Load } from '../components/Load'
+import { useNavigation } from '@react-navigation/core';
+import { PlantProps } from '../lib/Storage';
+import { Load } from '../components/Load' 
 
+import api from '../services/api'
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { useNavigation } from '@react-navigation/core';
 
 // import { Container } from './styles';
 
@@ -25,24 +26,10 @@ export function PlantSelect() {
         title: string
     }
 
-    interface PlantsProps {
-        id: string,
-        name: string,
-        about: string,
-        water_tips: string,
-        photo: string,
-        environments: [string],
-        frequency: {
-            times: string,
-            repeat_every: string
-        }
-    }
-
-
 
     const [enviroments, setEnviroments] = useState<EnviromentsData[]>([])
-    const [plants, setplants] = useState<PlantsProps[]>([])
-    const [filteredPlants, setFilteredPlants] = useState<PlantsProps[]>([])
+    const [plants, setplants] = useState<PlantProps[]>([])
+    const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([])
     const [enviroment, setEnviroment] = useState('all')
     const [loading, setLoading] = useState(true)
 
@@ -65,7 +52,7 @@ export function PlantSelect() {
 
     }
 
-    function handlePlantSelected(plant: PlantsProps){         
+    function handlePlantSelected(plant: PlantProps){         
         navigation.navigate('PlantSave', { plant })
     }
 

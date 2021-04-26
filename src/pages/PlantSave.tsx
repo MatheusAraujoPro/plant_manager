@@ -12,31 +12,20 @@ import {
 } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useRoute }  from '@react-navigation/core';
-import DatetimePiecker, { Event } from '@react-native-community/datetimepicker'
-
-import { SvgFromUri } from 'react-native-svg'
-import waterDrop from '../assets/waterdrop.png'
 import { Button } from '../components/Button';
+import { SvgFromUri } from 'react-native-svg'
+import { format, isBefore } from 'date-fns';
+import { loadPlants, PlantProps, plantSave } from '../lib/Storage';
+
+import DatetimePiecker, { Event } from '@react-native-community/datetimepicker'
+import waterDrop from '../assets/waterdrop.png'
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { format, isBefore } from 'date-fns';
 
 // import { Container } from './styles';
 
 interface Params{
-    plant:{
-        id: string,
-        name: string,
-        about: string,
-        water_tips: string,
-        photo: string,
-        environments: [string],
-        frequency: {
-            times: string,
-            repeat_every: string
-        }
-    }
-
+    plant: PlantProps
 }
 
 export function PlantSave() {
@@ -65,6 +54,20 @@ export function PlantSave() {
 
     function handleOpenDateTimePickerForAndroid(){
         setShowDateTimePicker(oldState => !oldState)
+    }
+
+    async function handleSave() {
+               
+        try {
+            
+            await plantSave({
+                ...plant,
+                dateNotifications: selectedDateTime
+            })
+            
+        } catch {
+            Alert.alert('Não foi possível Salvar 😥')
+        }
     }
     
     return (
@@ -121,7 +124,7 @@ export function PlantSave() {
 
                 <Button 
                     title="Cadastrar Planta"
-                    onPress={() => {}}
+                    onPress={handleSave}
                 />
 
             </View>
