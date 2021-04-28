@@ -11,7 +11,7 @@ import {
 
 } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
-import { useRoute }  from '@react-navigation/core';
+import { useNavigation,  useRoute }  from '@react-navigation/core';
 import { Button } from '../components/Button';
 import { SvgFromUri } from 'react-native-svg'
 import { format, isBefore } from 'date-fns';
@@ -33,6 +33,7 @@ export function PlantSave() {
 
     const [selectedDateTime, setSelectedDateTime] = useState(new Date())
     const [showDateTimePicker, setShowDateTimePicker] = useState(Platform.OS === 'ios')
+    const navigation = useNavigation()
 
     const route = useRoute()
     const { plant } = route.params as Params
@@ -63,6 +64,14 @@ export function PlantSave() {
             await plantSave({
                 ...plant,
                 dateNotifications: selectedDateTime
+            })
+
+            navigation.navigate('Confirmation', {
+                title: 'Tudo certo',  
+                subTitle: 'Fique tranquilo, pois sempre vamos te lembrar de cuidar das suas plantinhas com muito cuidado',
+                buttonTitle: 'ComeMuito Obrigado',
+                icon: 'hug',
+                nextScren: 'MyPlants'
             })
             
         } catch {

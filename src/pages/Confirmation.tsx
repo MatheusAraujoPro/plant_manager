@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/core';
 import React from 'react';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import {
     SafeAreaView,
     View,
@@ -12,28 +12,48 @@ import fonts from '../styles/fonts';
 
 // import { Container } from './styles';
 
+interface Params {
+    title: string
+    subTitle: string
+    buttonTitle: string
+    icon: 'smile' | 'hug',
+    nextScren: string
+}
+
+const emojis = {
+    smile: '😁',
+    hug: '🤭'
+}
+
 export function Confirmation() {
     const navigation = useNavigation()
+    const routes = useRoute();
+    const {
+            title,
+            subTitle,
+            buttonTitle,
+            icon,
+            nextScren
+    } = routes.params as Params
 
     function handleMoveOn() {
-        navigation.navigate('PlantSelect')
+        navigation.navigate(nextScren)
     }
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.emoji}>
-                    😁
+                    {emojis[icon]}
                 </Text>
                 <Text style={styles.title}>
-                    Prontinho
+                    {title}
                 </Text>
                 <Text style={styles.subtitle}>
-                    Agora vamos começar a cuidar {'\n'}
-                    das suas plantinhas
+                  {subTitle}
                 </Text>
 
                 <View style={styles.footer}>
-                    <Button 
+                    <Button
                         title="Começar"
                         onPress={handleMoveOn}
                     />
@@ -83,7 +103,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 60,
         marginTop: 50
-    
+
     }
 
 })
