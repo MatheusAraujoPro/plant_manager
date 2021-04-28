@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 
 
 
-export interface PlantProps {
+export interface PlantProps {  
     id: string,
     name: string,
     about: string,
